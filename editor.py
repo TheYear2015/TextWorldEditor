@@ -1,4 +1,5 @@
 import game_data
+import node_panel
 import tkinter
 
 class EditorMain:
@@ -34,18 +35,20 @@ class EditorMain:
 		
 		
 		#test
-		self.TestNodeButton(10000)
+		self.TestNode(10000)
 		
-	def TestNodeButton(self, count):
+	def RemoveNode(self, b):
+		print(b)
+		
+	def TestNode(self, count):
 		for i in range(1, count):
-			self.view_frame.create_window( 50 + 100 * (i % 1000), 30 + 40 * i / 1000, tags='BTN1',window=tkinter.Button(self.view_frame,text=u'侦听'+str(i),width=8))
+			b = self.view_frame.create_window( 50 + 100 * (i % 1000), 30 + 300 * i / 1000, window=node_panel.NodePanel(self.view_frame,removeFunc=self.RemoveNode))
 			
 		self.view_frame.update_idletasks()
 			
 		w = self.view_frame.winfo_screenwidth()
 		h = self.view_frame.winfo_screenheight() 
 		self.view_frame['scrollregion'] = self.view_frame.bbox('all')
-		
 		
 	def Save(self):
 		print("Save")
