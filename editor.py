@@ -4,6 +4,11 @@ import tkinter
 
 class EditorMain:
 	def __init__(self):
+		self.allNode=[]
+		
+		self.content = game_data.ContentData()
+		self.tree = game_data.ConentTree()
+	
 		self.root = tkinter.Tk()
 		self.root.title("Text World Editor")
 		
@@ -38,11 +43,23 @@ class EditorMain:
 		self.TestNode(10000)
 		
 	def RemoveNode(self, b):
-		print(b)
+		self.allNode.remove(b)
+		b.destroy()
+		
+	def NewNode(self, posx, posy):
+		b = node_panel.NodePanel(self.view_frame,removeFunc=self.RemoveNode)
+		self.view_frame.create_window( posx, posy, window=b);
+		self.allNode.append(b)
+		return b
+		
+	#重新排版
+	def ReLayout():
+		#没有关联的放在最后
+		print("ReLayout")
 		
 	def TestNode(self, count):
 		for i in range(1, count):
-			b = self.view_frame.create_window( 50 + 100 * (i % 1000), 30 + 300 * i / 1000, window=node_panel.NodePanel(self.view_frame,removeFunc=self.RemoveNode))
+			b = self.NewNode( 50 + 100 * (i % 1000), 30 + 300 * i / 1000)
 			
 		self.view_frame.update_idletasks()
 			
@@ -52,9 +69,17 @@ class EditorMain:
 		
 	def Save(self):
 		print("Save")
+		self.content.Save("content_data.pck")
+		self.tree.Save("content_tree.pck")
 
 	def Load(self):
 		print("Load")
+		self.content.Load("content_data.pck")
+		self.tree.Load("content_tree.pck")
+		
+		for b in self.allNode:
+			b.destroy()
+		self.allNode = []
 
 	def Exit(self):
 		self.root.quit()

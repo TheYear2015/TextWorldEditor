@@ -1,4 +1,5 @@
 import json
+import os
 
 class ContentData:
 	def __init__(self):
@@ -25,23 +26,25 @@ class ContentData:
 		self.textSet = {}
 		self.baseId = 1
 			
-	def SaveToFile(self, fileName):
+	def Save(self, fileName):
 		f = open(fileName, "w")
+		
 		try:
 			f.write(json.dumps(self.textSet))
 		finally:
 			f.close()
 		
-	def ReadFromFile(self, fileName):
+	def Load(self, fileName):
 		self.Clean()
-		f = open(fileName, "r")
-		try:
-			d = f.read()
-			self.textSet = json.loads(d)
-		finally:
-			f.close()
-			keys = max(self.textSet.keys())
-			self.baseId = int(keys) + 1;
+		if os.path.exists(fileName):
+			f = open(fileName, "r")
+			try:
+				d = f.read()
+				self.textSet = json.loads(d)
+			finally:
+				f.close()
+				keys = max(self.textSet.keys())
+				self.baseId = int(keys) + 1;
 
 
 def ContentTreeNode2Dict(obj):
@@ -94,23 +97,24 @@ class ConentTree:
 	def GetSortedKeys(self):
 		return sorted(self.allNode)
 		
-	def SaveToFile(self, fileName):
+	def Save(self, fileName):
 		f = open(fileName, "w")
 		try:
 			f.write(json.dumps(self.allNode, default=ContentTreeNode2Dict))
 		finally:
 			f.close()
 		
-	def ReadFromFile(self, fileName):
+	def Load(self, fileName):
 		self.Clean()
-		f = open(fileName, "r")
-		try:
-			d = f.read()
-			self.allNode = json.loads(d,object_hook = Dict2ContentTreeNode)
-		finally:
-			f.close()
-			keys = max(self.allNode.keys())
-			self.baseId = int(keys) + 1;
+		if os.path.exists(fileName):
+			f = open(fileName, "r")
+			try:
+				d = f.read()
+				self.allNode = json.loads(d,object_hook = Dict2ContentTreeNode)
+			finally:
+				f.close()
+				keys = max(self.allNode.keys())
+				self.baseId = int(keys) + 1;
 		
 			
 if __name__ == "__main__":
@@ -119,8 +123,8 @@ if __name__ == "__main__":
 	for i in range(1, 1000):
 		data.InsertTextContent(str(i))
 	
-	data.SaveToFile("fffff")
-	data.ReadFromFile("fffff")
+	data.Save("fffff")
+	data.Load("fffff")
 	
 	tree = ConentTree();
 	n = tree.GetNode("0")
@@ -132,6 +136,6 @@ if __name__ == "__main__":
 	print(tree.GetSortedKeys())
 	for i in range(1, 1000):
 		tree.NewNode()
-	tree.SaveToFile("tttt")
-	tree.ReadFromFile("tttt")
+	tree.Save("tttt")
+	tree.Load("tttt")
 	
