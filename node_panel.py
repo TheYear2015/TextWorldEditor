@@ -17,14 +17,21 @@ class NodePanel(tkinter.Frame):
 		self.cList.pack(side=tkinter.TOP, expand=tkinter.YES, fill=tkinter.BOTH)
 		
 		#romve btn
-		btn = tkinter.Button(self, text='del', height= 10, width=10, command=removeFunc)
+		btn = tkinter.Button(self, text='del', height= 10, width=10, command=self.RemoveSelf)
 		btn.pack(side=tkinter.BOTTOM, padx="2m",fill=tkinter.X)
+		
+		self.removeCall = removeFunc
 		
 	def Edit(self):
 		print("edit")
 		
 	def SetData(self, data):
 		self.id["text"] = data.id
+		
+	def RemoveSelf(self):
+		if self.removeCall:
+			self.removeCall(self)
+		
 		
 			
 if __name__ == "__main__":
