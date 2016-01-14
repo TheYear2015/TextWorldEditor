@@ -1,5 +1,6 @@
 import game_data
 import node_panel
+import content_dlg
 import tkinter
 
 class EditorMain:
@@ -18,6 +19,9 @@ class EditorMain:
 		btn.pack(side=tkinter.LEFT, padx="2m")
 		
 		btn = tkinter.Button(self.tool_bar, text='Load', command=self.Load)
+		btn.pack(side=tkinter.LEFT, padx="2m")
+		
+		btn = tkinter.Button(self.tool_bar, text='Content', command=self.EditContent)
 		btn.pack(side=tkinter.LEFT, padx="2m")
 		
 		self.tool_bar.pack(side=tkinter.TOP, fill=tkinter.X)
@@ -80,7 +84,10 @@ class EditorMain:
 		for b in self.allNode:
 			b.destroy()
 		self.allNode = []
-
+	
+	def EditContent(self):
+		dlg = content_dlg.ContentDlg(self.root, self.content)
+		
 	def Exit(self):
 		self.root.quit()
 
